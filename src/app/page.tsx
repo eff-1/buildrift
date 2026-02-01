@@ -1,3 +1,5 @@
+import { WalletConnect } from '@/components/WalletConnect'
+
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-white">
@@ -6,9 +8,7 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="font-bold text-xl text-gray-900">BUILDRIFT</div>
-            <button className="bg-gray-900 text-white px-6 py-2 rounded-lg hover:bg-gray-800 transition-colors">
-              Get Started
-            </button>
+            <WalletConnect />
           </div>
         </div>
       </nav>
@@ -34,9 +34,11 @@ export default function HomePage() {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-            <button className="bg-gray-900 text-white px-8 py-4 rounded-lg font-semibold hover:bg-gray-800 transition-colors text-lg">
-              Connect Wallet
+            <WalletConnect />
+            <button className="border-2 border-gray-300 text-gray-700 px-8 py-4 rounded-lg font-semibold hover:border-gray-400 transition-colors text-lg">
+              View Demo
             </button>
+          </div>
             <button className="border-2 border-gray-300 text-gray-700 px-8 py-4 rounded-lg font-semibold hover:border-gray-400 transition-colors text-lg">
               View Demo
             </button>
