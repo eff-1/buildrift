@@ -1,36 +1,107 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# BUILDRIFT
 
-## Getting Started
+**Proof of real builders. Not just attendance.**
 
-First, run the development server:
+BUILDRIFT transforms Web3 events into verifiable builder reputation that sponsors and employers actually trust.
+
+## 🎯 The Problem
+
+WebZero cannot reliably prove who actually contributed, learned, shipped, or mentored during events — which weakens sponsor ROI, hiring pipelines, and long-term community value.
+
+## 🚀 The Solution
+
+- **Wallet-Based Identity**: One wallet = one identity across all events
+- **Organizer Verification**: Only event organizers can verify contributions  
+- **Enterprise Analytics**: Sponsor-grade data and metrics
+
+## 🛠 Tech Stack
+
+- **Frontend**: Next.js 14 (App Router), Tailwind CSS
+- **Backend**: Supabase (PostgreSQL)
+- **Auth**: SIWE (Sign-In With Ethereum)
+- **Storage**: IPFS for attestations
+- **Hosting**: Vercel
+
+## 🏃‍♂️ Getting Started
 
 ```bash
+# Clone the repository
+git clone https://github.com/eff-1/buildrift.git
+cd buildrift
+
+# Install dependencies
+npm install
+
+# Set up environment variables
+cp .env.local.example .env.local
+# Edit .env.local with your Supabase and WalletConnect credentials
+
+# Run development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🌐 Live Demo
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Visit: [buildrift.vercel.app](https://buildrift.vercel.app)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📊 Features
 
-## Learn More
+### For Builders
+- Connect wallet to create verified identity
+- Earn reputation through event participation
+- Public profile showcasing verified contributions
+- Portable reputation across all events
 
-To learn more about Next.js, take a look at the following resources:
+### For Organizers (WebZero)
+- Create and manage events
+- Define custom actions and point values
+- Verify builder contributions
+- Access comprehensive analytics dashboard
+- Export sponsor-ready reports
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### For Sponsors
+- View real engagement metrics
+- Identify top contributors
+- Track completion rates
+- Measure actual ROI
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🏗 Architecture
 
-## Deploy on Vercel
+```
+Frontend (Next.js) → Supabase (Database) → IPFS (Attestations)
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🔐 Security
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Wallet-based authentication prevents identity fraud
+- Organizer-only verification prevents self-claiming
+- Cryptographic attestations stored on IPFS
+- Complete audit trails for all verifications
+
+## 📈 Roadmap
+
+- [x] Landing page and branding
+- [ ] Wallet authentication (SIWE)
+- [ ] Event creation and management
+- [ ] Action definition system
+- [ ] Verification workflow
+- [ ] Builder profiles
+- [ ] Analytics dashboard
+- [ ] Demo data population
+
+## 🤝 Contributing
+
+Built for WebZero events. Enterprise-grade event infrastructure.
+
+## 📄 License
+
+MIT License - see LICENSE file for details.
+
+---
+
+© 2026 BUILDRIFT. Enterprise-grade event infrastructure.
+
+
+
+
+
