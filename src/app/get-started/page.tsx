@@ -19,6 +19,9 @@ export default function GetStartedPage() {
 
   // Check for existing wallet connection on mount
   useEffect(() => {
+    // Always scroll to top when page loads
+    window.scrollTo(0, 0)
+    
     const savedWallet = localStorage.getItem('buildrift_wallet')
     if (savedWallet) {
       // Auto-redirect to dashboard if already connected
@@ -27,9 +30,12 @@ export default function GetStartedPage() {
     }
 
     if (typeof window !== 'undefined') {
+      // Improved wallet detection for mobile
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+      
       setWalletAvailability({
-        metamask: typeof window.ethereum !== 'undefined' && window.ethereum.isMetaMask,
-        coinbase: typeof window.ethereum !== 'undefined' && window.ethereum.isCoinbaseWallet,
+        metamask: isMobile ? true : (typeof window.ethereum !== 'undefined' && window.ethereum.isMetaMask),
+        coinbase: isMobile ? true : (typeof window.ethereum !== 'undefined' && window.ethereum.isCoinbaseWallet),
         walletconnect: true
       })
     }
@@ -90,19 +96,26 @@ export default function GetStartedPage() {
     try {
       if (walletType === 'MetaMask') {
         if (walletAvailability.metamask) {
-          const accounts = await window.ethereum.request({
-            method: 'eth_requestAccounts',
-          })
-          if (accounts.length > 0) {
-            setWalletAddress(accounts[0])
-            // Save to localStorage for persistence
-            localStorage.setItem('buildrift_wallet', accounts[0])
-            localStorage.setItem('buildrift_wallet_type', 'MetaMask')
-            showToast('Successfully connected to MetaMask!', 'success')
-            // Redirect to dashboard after short delay
-            setTimeout(() => {
-              router.push('/dashboard')
-            }, 1500)
+          // Try to connect
+          try {
+            const accounts = await window.ethereum.request({
+              method: 'eth_requestAccounts',
+            })
+            if (accounts.length > 0) {
+              setWalletAddress(accounts[0])
+              localStorage.setItem('buildrift_wallet', accounts[0])
+              localStorage.setItem('buildrift_wallet_type', 'MetaMask')
+              showToast('Successfully connected to MetaMask!', 'success')
+              setTimeout(() => router.push('/dashboard'), 1500)
+            }
+          } catch (error: any) {
+            // If no ethereum object, try mobile deep link
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+            if (isMobile) {
+              window.location.href = `https://metamask.app.link/dapp/${window.location.host}${window.location.pathname}`
+            } else {
+              throw error
+            }
           }
         } else {
           const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
@@ -114,20 +127,33 @@ export default function GetStartedPage() {
         }
       } else if (walletType === 'Coinbase Wallet') {
         if (walletAvailability.coinbase) {
-          const accounts = await window.ethereum.request({
-            method: 'eth_requestAccounts',
-          })
-          if (accounts.length > 0) {
-            setWalletAddress(accounts[0])
-            localStorage.setItem('buildrift_wallet', accounts[0])
-            localStorage.setItem('buildrift_wallet_type', 'Coinbase Wallet')
-            showToast('Successfully connected to Coinbase Wallet!', 'success')
-            setTimeout(() => {
-              router.push('/dashboard')
-            }, 1500)
+          try {
+            const accounts = await window.ethereum.request({
+              method: 'eth_requestAccounts',
+            })
+            if (accounts.length > 0) {
+              setWalletAddress(accounts[0])
+              localStorage.setItem('buildrift_wallet', accounts[0])
+              localStorage.setItem('buildrift_wallet_type', 'Coinbase Wallet')
+              showToast('Successfully connected to Coinbase Wallet!', 'success')
+              setTimeout(() => router.push('/dashboard'), 1500)
+            }
+          } catch (error: any) {
+            // Try mobile deep link
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+            if (isMobile) {
+              window.location.href = `https://go.cb-w.com/dapp?cb_url=${encodeURIComponent(window.location.href)}`
+            } else {
+              throw error
+            }
           }
         } else {
-          showToast('Coinbase Wallet not detected. Please install the extension or app.', 'error')
+          const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+          if (isMobile) {
+            window.location.href = `https://go.cb-w.com/dapp?cb_url=${encodeURIComponent(window.location.href)}`
+          } else {
+            showToast('Coinbase Wallet not detected. Please install the extension or app.', 'error')
+          }
         }
       } else if (walletType === 'WalletConnect') {
         // For now, simulate WalletConnect - in production you'd use @walletconnect/web3-provider

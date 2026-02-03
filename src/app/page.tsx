@@ -8,6 +8,9 @@ export default function HomePage() {
   const router = useRouter()
 
   useEffect(() => {
+    // Always scroll to top when page loads
+    window.scrollTo(0, 0)
+    
     // Check if user is already connected
     if (typeof window !== 'undefined') {
       const savedWallet = localStorage.getItem('buildrift_wallet')

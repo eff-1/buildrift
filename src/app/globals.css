@@ -12,6 +12,16 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Always start pages from top */
+body {
+  scroll-behavior: auto;
+}
+
+/* Prevent scroll restoration on navigation */
+.page-container {
+  scroll-behavior: auto;
+}
+
 /* Custom focus styles */
 button:focus,
 a:focus {

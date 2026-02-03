@@ -16,6 +16,9 @@ export default function LeaderboardPage() {
   const [userWallet, setUserWallet] = useState<string | null>(null)
 
   useEffect(() => {
+    // Always scroll to top when page loads
+    window.scrollTo(0, 0)
+    
     const savedWallet = localStorage.getItem('buildrift_wallet')
     setUserWallet(savedWallet)
   }, [])

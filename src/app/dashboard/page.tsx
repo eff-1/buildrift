@@ -10,6 +10,9 @@ export default function DashboardPage() {
   const router = useRouter()
 
   useEffect(() => {
+    // Always scroll to top when page loads
+    window.scrollTo(0, 0)
+    
     // Check for saved wallet connection
     const savedWallet = localStorage.getItem('buildrift_wallet')
     if (savedWallet) {

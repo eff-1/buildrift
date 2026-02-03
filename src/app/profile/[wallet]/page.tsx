@@ -8,8 +8,12 @@ export default function ProfilePage() {
   const params = useParams()
   const walletAddress = params.wallet as string
   const [isOwnProfile, setIsOwnProfile] = useState(false)
+  const [showSettings, setShowSettings] = useState(false)
 
   useEffect(() => {
+    // Always scroll to top when page loads
+    window.scrollTo(0, 0)
+    
     // Check if this is the user's own profile
     const savedWallet = localStorage.getItem('buildrift_wallet')
     setIsOwnProfile(savedWallet === walletAddress)
@@ -85,15 +89,147 @@ export default function ProfilePage() {
                 Share Profile
               </button>
               {isOwnProfile && (
-                <Link
-                  href="/dashboard"
-                  className="border border-gray-300 text-gray-700 px-6 py-2 rounded-lg font-medium hover:border-gray-400 transition-colors"
-                >
-                  Edit Dashboard
-                </Link>
+                <>
+                  <Link
+                    href="/dashboard"
+                    className="border border-gray-300 text-gray-700 px-6 py-2 rounded-lg font-medium hover:border-gray-400 transition-colors"
+                  >
+                    Dashboard
+                  </Link>
+                  <button
+                    onClick={() => setShowSettings(!showSettings)}
+                    className="border border-blue-300 text-blue-700 px-6 py-2 rounded-lg font-medium hover:border-blue-400 transition-colors"
+                  >
+                    Settings
+                  </button>
+                </>
               )}
             </div>
           </div>
+
+          {/* Settings Panel - Only for own profile */}
+          {isOwnProfile && showSettings && (
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 mb-8 border border-gray-200">
+              <h2 className="text-2xl font-bold text-gray-900 mb-6">Profile Settings</h2>
+              
+              <div className="space-y-6">
+                {/* Profile Image Upload */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Profile Image
+                  </label>
+                  <div className="flex items-center gap-4">
+                    <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-green-500 rounded-full flex items-center justify-center">
+                      <span className="text-lg font-bold text-white">
+                        {walletAddress.slice(2, 4).toUpperCase()}
+                      </span>
+                    </div>
+                    <button className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors">
+                      Upload Image
+                    </button>
+                  </div>
+                  <p className="text-sm text-gray-500 mt-1">
+                    Upload a profile picture (coming soon with database integration)
+                  </p>
+                </div>
+
+                {/* Display Name */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Display Name
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Enter your builder name"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                  <p className="text-sm text-gray-500 mt-1">
+                    Optional display name for your profile
+                  </p>
+                </div>
+
+                {/* Bio */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Bio
+                  </label>
+                  <textarea
+                    rows={3}
+                    placeholder="Tell others about your building journey..."
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+
+                {/* Skills */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Skills & Technologies
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="React, Solidity, Python, etc."
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                  <p className="text-sm text-gray-500 mt-1">
+                    Comma-separated list of your skills
+                  </p>
+                </div>
+
+                {/* Document Upload Section */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Contribution Proofs
+                  </label>
+                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                    <svg className="w-12 h-12 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                    </svg>
+                    <p className="text-gray-600 mb-2">Upload certificates, screenshots, or documents</p>
+                    <button className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors">
+                      Choose Files
+                    </button>
+                    <p className="text-sm text-gray-500 mt-2">
+                      Supported: Images, PDFs, Documents (coming with database)
+                    </p>
+                  </div>
+                </div>
+
+                {/* Privacy Settings */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Privacy Settings
+                  </label>
+                  <div className="space-y-2">
+                    <label className="flex items-center">
+                      <input type="checkbox" className="rounded border-gray-300 text-blue-600 focus:ring-blue-500" defaultChecked />
+                      <span className="ml-2 text-sm text-gray-700">Make profile publicly visible</span>
+                    </label>
+                    <label className="flex items-center">
+                      <input type="checkbox" className="rounded border-gray-300 text-blue-600 focus:ring-blue-500" defaultChecked />
+                      <span className="ml-2 text-sm text-gray-700">Show verified actions</span>
+                    </label>
+                    <label className="flex items-center">
+                      <input type="checkbox" className="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+                      <span className="ml-2 text-sm text-gray-700">Allow profile indexing by search engines</span>
+                    </label>
+                  </div>
+                </div>
+
+                {/* Save Button */}
+                <div className="flex justify-end gap-4 pt-4 border-t border-gray-200">
+                  <button
+                    onClick={() => setShowSettings(false)}
+                    className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg font-medium hover:border-gray-400 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button className="px-6 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors">
+                    Save Settings
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Stats Grid */}
           <div className="grid sm:grid-cols-4 gap-6 mb-8">
@@ -165,12 +301,15 @@ export default function ProfilePage() {
 
           {/* Verification Notice */}
           <div className="mt-8 text-center">
-            <div className="inline-flex items-center gap-2 bg-green-50 text-green-700 px-4 py-2 rounded-full text-sm border border-green-200">
+            <div className="inline-flex items-center gap-2 bg-green-50 text-green-700 px-4 py-2 rounded-full text-sm border border-green-200 mb-4">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
               </svg>
               All actions verified by WebZero organizers
             </div>
+            <p className="text-sm text-gray-500">
+              Your profile data is linked to your wallet address. Connect from any device to access your complete builder history.
+            </p>
           </div>
         </div>
       </div>
